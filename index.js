@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const cors = require('cors');
-// const { getByClient, getClientsList, getByPatent, getByRegex, newRecord, getPatentsList} = require('./controllers.js');
+const { getAllProducts} = require('./controllers.js');
 
 app.use(cors());
 
@@ -14,17 +14,17 @@ URL = process.env.URL || 'http://localhost:5000';
 // CUANDO HAY ERRORES AL EJECUTARSE LAS FUNC EL SERVIDOR CRASHEA //
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! //
 
-app.get("/lista/clientes", getClientsList);
+app.get("/", getAllProducts);
 
-app.get("/lista/patentes", getPatentsList)
+// app.get("/lista/patentes", getPatentsList)
 
-app.get('/cliente/:name', getByClient);
+// app.get('/cliente/:name', getByClient);
 
-app.get('/patente/:patente', getByPatent);
+// app.get('/patente/:patente', getByPatent);
 
-app.get('/buscar/:regex', getByRegex);
+// app.get('/buscar/:regex', getByRegex);
 
-app.post('/nuevo', newRecord);
+// app.post('/nuevo', newRecord);
 
 
 app.listen(process.env.PORT | 5000, () => {
