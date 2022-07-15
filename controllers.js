@@ -1,7 +1,17 @@
 const productos = require("./productos-test.js");
 const mongoose = require('mongoose');
+const fs = require('fs');
 
 const {Producto, Categoria} = require('./models.js');
+
+
+// MULTER
+const multer = require('multer');
+
+const storage = multer.diskStorage({})
+
+const upload = multer({ storage: storage }).single('imagenes')
+
 
 const controller = {}
 
@@ -14,6 +24,7 @@ controller.todosProductos = async (req, res) => {
     res.send(todosProductos)
 }
 
+// Funcion de la pagina principal
 controller.todasCategorias = async (req, res) => {
     const todasCategorias = await Categoria.find();
     res.send(todasCategorias);
@@ -25,18 +36,30 @@ controller.todasCategorias = async (req, res) => {
 // Hay que agregar la funcionalidad de la cantidad en el producto y utilizar la peticion PUT para editar esta.
 
 controller.nuevoProducto = async (req,res ) => {
-    const categoriaProducto = req.body.categoria;
-    const nuevoProducto = new Producto({...req.body});
-    const productoInsertado = await nuevoProducto.save();
-    const categoria =  await Categoria.findOne({ categoria: categoriaProducto}).exec();
-    categoria.productos.push(nuevoProducto);
-    const  categoriaGuardada = await categoria.save();
-    console.log(categoriaGuardada)
-    return res.status(201).json(categoria);
+    // console.log(req.headers)
+    upload(req, res, async (err) => {
+        if (err) {
+            console.log(err)
+          res.sendStatus(500);
+        }
+        const categoriaProducto = req.body.categoria;
+        const nuevoProducto = new Producto(
+            {...req.body, 
+                imagenes : fs.readFileSync(`${req.file.path}`)
+    });
+    console.log(nuevoProducto)
+        const productoInsertado = await nuevoProducto.save();
+        const categoria =  await Categoria.findOne({ categoria: categoriaProducto}).exec();
+        categoria.productos.push(nuevoProducto);
+        const  categoriaGuardada = await categoria.save();
+        return res.status(201).json(categoria);
+      });
+
 }
 
 controller.nuevaCategoria = async (req, res ) => {
-    const nuevaCategoria = new Categoria({...req.body});
+    console.log(req.body)
+    const nuevaCategoria = new Categoria(req.body);
     const categoriaInsertada = await nuevaCategoria.save();
     return res.status(201).json(categoriaInsertada);
 }
