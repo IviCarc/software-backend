@@ -4,9 +4,7 @@ const app = express();
 require('dotenv').config();
 const cors = require('cors');
 
-
-
-const { getAllProducts, nuevoProducto, nuevaCategoria, todosProductos, todasCategorias } = require('./controllers.js');
+const { getAllProducts, nuevoProducto, nuevaCategoria, todosProductos, todasCategorias, obtenerProducto } = require('./controllers.js');
 
 
 app.use(cors());
@@ -20,6 +18,8 @@ app.get("/", getAllProducts);
 app.get("/todos-productos", todosProductos);
 
 app.get("/todas-categorias", todasCategorias);
+
+app.get('/:id', obtenerProducto);
 
 app.post('/nuevo-producto', nuevoProducto);
 

@@ -30,6 +30,16 @@ controller.todasCategorias = async (req, res) => {
     res.send(todasCategorias);
 }
 
+controller.obtenerProducto = async (req, res) => {
+    const {categoria, id} = req.params;
+    console.log(categoria, id);
+    const producto = await Producto.findOne({_id : id});
+    // const categoria = await Categoria.findOne({categoria:categoria});
+    // const producto = Categoria
+    console.log(producto)
+    res.send(producto);
+}
+
 // getAllProducts es la prueba que utiliza la página
 
 // Por ahora, el producto es agregado a cada categoria sin importar si ya fue agregado una vez, es decir hay repetidos.
