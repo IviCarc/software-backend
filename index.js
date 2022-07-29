@@ -19,7 +19,7 @@ app.get("/todos-productos", todosProductos);
 
 app.get("/todas-categorias", todasCategorias);
 
-app.get('/:id', obtenerProducto);
+app.get('/get/:id', obtenerProducto);
 
 app.post('/nuevo-producto', nuevoProducto);
 
