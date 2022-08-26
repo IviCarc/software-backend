@@ -26,6 +26,7 @@ controller.todosProductos = async (req, res) => {
 
 // Funcion de la pagina principal
 controller.todasCategorias = async (req, res) => {
+    console.log('ASD')
     const todasCategorias = await Categoria.find();
     res.send(todasCategorias);
 }
