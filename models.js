@@ -1,6 +1,15 @@
 const mongoose = require("mongoose");
 const {Schema} = mongoose;
 
+
+
+
+
+// BUSCAR METODO POPULATE
+
+
+
+
 const VendedorSchema = new Schema ({
     nombre:String,
     apellido:String,
@@ -10,10 +19,8 @@ const VendedorSchema = new Schema ({
     paisResidencia:String,
     telefono: Number,
     // HISTORIAL
-    // publicaciones : [ProductosSchema]
+    productos :{ type: Schema.ObjectId, ref: "Producto" }
 })
-
-console.log(VendedorSchema.telefono) // BUSCAR POPULATION
 
 const ProductosSchema = new Schema({
     nombre : String,
@@ -22,7 +29,7 @@ const ProductosSchema = new Schema({
     stock : Number,
     precio : Number,
     imagenes : Buffer,
-    vendedor : VendedorSchema,
+    vendedor : { type: Schema.ObjectId, ref: "Vendedor" },
 })
 
 const SubcategoriaSchema = new Schema ({
@@ -36,9 +43,9 @@ const CategoriaSchema  = new Schema ({
 })
 
 
-
+const Vendedor = mongoose.model("Vendedor", VendedorSchema);
 const Producto = mongoose.model("Producto", ProductosSchema);
 const Subcategoria = mongoose.model("Subcategoria", SubcategoriaSchema);
 const Categoria = mongoose.model("Categoria", CategoriaSchema);
 
-module.exports = {Categoria, Producto, Subcategoria}
+module.exports = {Categoria, Producto, Subcategoria, Vendedor}
