@@ -26,18 +26,15 @@ controller.todosProductos = async (req, res) => {
 
 // Funcion de la pagina principal
 controller.todasCategorias = async (req, res) => {
-    console.log('ASD')
     const todasCategorias = await Categoria.find();
     res.send(todasCategorias);
 }
 
 controller.obtenerProducto = async (req, res) => {
     const {categoria, id} = req.params;
-    console.log(categoria, id);
     const producto = await Producto.findOne({_id : id});
     // const categoria = await Categoria.findOne({categoria:categoria});
     // const producto = Categoria
-    console.log(producto)
     res.send(producto);
 }
 
@@ -47,10 +44,8 @@ controller.obtenerProducto = async (req, res) => {
 // Hay que agregar la funcionalidad de la cantidad en el producto y utilizar la peticion PUT para editar esta.
 
 controller.nuevoProducto = async (req,res ) => {
-    // console.log(req.headers)
     upload(req, res, async (err) => {
         if (err) {
-            console.log(err)
           res.sendStatus(500);
         }
         const categoriaProducto = req.body.categoria;
@@ -58,7 +53,6 @@ controller.nuevoProducto = async (req,res ) => {
             {...req.body, 
                 imagenes : fs.readFileSync(`${req.file.path}`)
     });
-    console.log(nuevoProducto)
         const productoInsertado = await nuevoProducto.save();
         const categoria =  await Categoria.findOne({ categoria: categoriaProducto}).exec();
         categoria.productos.push(nuevoProducto);
